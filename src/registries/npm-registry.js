@@ -10,6 +10,7 @@ import envReplace from '../util/env-replace.js';
 import Registry from './base-registry.js';
 import {addSuffix, removePrefix} from '../util/misc';
 import isRequestToRegistry from './is-request-to-registry.js';
+import * as toNerfDart from "nerf-dart";
 
 const userHome = require('../util/user-home-dir').default;
 const path = require('path');
@@ -53,7 +54,7 @@ export default class NpmRegistry extends Registry {
   request(pathname: string, opts?: RegistryRequestOptions = {}): Promise<*> {
     const registry = addSuffix(this.getRegistry(pathname), '/');
     const requestUrl = url.resolve(registry, pathname);
-    const alwaysAuth = this.getScopedOption(registry.replace(/^https?:/, ''), 'always-auth')
+    const alwaysAuth = this.getScopedOption(toNerfDart(registry), 'always-auth')
       || this.getOption('always-auth')
       || removePrefix(requestUrl, registry)[0] === '@';
 
@@ -173,7 +174,7 @@ export default class NpmRegistry extends Registry {
     }
 
     for (let registry of [this.getRegistry(packageName), '', DEFAULT_REGISTRY]) {
-      registry = registry.replace(/^https?:/, '');
+      registry = toNerfDart(registry);
 
       // Check for bearer token.
       let auth = this.getScopedOption(registry.replace(/\/?$/, '/'), '_authToken');
