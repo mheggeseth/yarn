@@ -59,8 +59,8 @@ export default class NpmRegistry extends Registry {
       || removePrefix(requestUrl, registry)[0] === '@';
 
     const headers = {};
-    if (this.token || (alwaysAuth && isRequestToRegistry(requestUrl, registry))) {
-      const authorization = this.getAuth(pathname);
+    if (this.token || alwaysAuth) {
+      const authorization = this.getAuth(registry);
       if (authorization) {
         headers.authorization = authorization;
       }
@@ -177,7 +177,7 @@ export default class NpmRegistry extends Registry {
       registry = toNerfDart(registry);
 
       // Check for bearer token.
-      let auth = this.getScopedOption(registry.replace(/\/?$/, '/'), '_authToken');
+      let auth = this.getScopedOption(registry, '_authToken');
       if (auth) {
         return `Bearer ${String(auth)}`;
       }
