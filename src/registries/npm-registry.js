@@ -9,8 +9,7 @@ import NpmResolver from '../resolvers/registries/npm-resolver.js';
 import envReplace from '../util/env-replace.js';
 import Registry from './base-registry.js';
 import {addSuffix, removePrefix} from '../util/misc';
-import isRequestToRegistry from './is-request-to-registry.js';
-import * as toNerfDart from "nerf-dart";
+import toNerfDart from 'nerf-dart';
 
 const userHome = require('../util/user-home-dir').default;
 const path = require('path');
